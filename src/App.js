@@ -1,26 +1,72 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import jsonApi from './api';
+
+class App extends Component {
+
+  state = {
+    jsonData: [],
+    results: [],
+    active: false
+  }
+
+  componentDidMount() {
+    jsonApi().then((json) => {
+      this.setState({
+        jsonData: json
+      })
+    })
+  }
+
+  searchJson(word) {
+    return this.state.jsonData.filter((data) => {
+      if (data.name.toLowerCase().startsWith(word.toLowerCase())) {
+        return data;
+      }
+    })
+  }
+
+  onInputChange = (e) => {
+    let results = this.searchJson(e.target.value)
+    if (e.target.value && results.length > 0 ) {
+      this.setState({
+        results,
+        active: true
+      })
+    }
+    else {
+      this.setState({
+        active: false
+      })
+    }
+  }
+
+  render() {
+    const { results, active } = this.state;
+    const classname = active ? "auto-complete-result-box active" : "auto-complete-result-box" ;
+
+    return (
+      <div className="App">
+        <div className="page-header"><h1 className="name">Gooogle Clone</h1></div>
+        <div className="auto-complete-box">
+          <input  placeholder="Type Here..." onChange={this.onInputChange}></input>
+
+          <div className={classname}>
+          {results.length > 0 && results.map((result) => {
+            return (
+              <div className="search-items">
+                {result.name}
+              </div>
+            )
+          })
+          }
+        </div>
+        </div>
+      </div>
+    )
+  }
 }
+
 
 export default App;
