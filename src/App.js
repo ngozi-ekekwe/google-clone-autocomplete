@@ -29,7 +29,7 @@ class App extends Component {
 
   onInputChange = (e) => {
     let results = this.searchJson(e.target.value)
-    if (e.target.value && results.length > 0 ) {
+    if (e.target.value && results.length > 0) {
       this.setState({
         results,
         active: true
@@ -44,24 +44,24 @@ class App extends Component {
 
   render() {
     const { results, active } = this.state;
-    const classname = active ? "auto-complete-result-box active" : "auto-complete-result-box" ;
+    const classname = active ? "auto-complete-result-box active" : "auto-complete-result-box";
 
     return (
       <div className="App">
         <div className="page-header"><h1 className="name">Gooogle Clone</h1></div>
         <div className="auto-complete-box">
-          <input  placeholder="Type Here..." onChange={this.onInputChange}></input>
+          <input placeholder="Type Here..." onChange={this.onInputChange}></input>
 
           <div className={classname}>
-          {results.length > 0 && results.map((result) => {
-            return (
-              <div className="search-items">
-                {result.name}
-              </div>
-            )
-          })
-          }
-        </div>
+            {results.length > 0 && results.map((result) => {
+              return (
+                <div className="search-items">
+                  {result.name}
+                </div>
+              )
+            })
+            }
+          </div>
         </div>
       </div>
     )
